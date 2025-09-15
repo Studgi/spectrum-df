@@ -54,7 +54,7 @@ func (q *QUIC) Listen(addr string) (err error) {
 			if err != nil {
 				return
 			}
-			go q.handle(connection)
+			go q.handle(*connection)
 		}
 	}()
 	q.listener = listener
@@ -83,7 +83,7 @@ func (q *QUIC) Close() (err error) {
 	}
 }
 
-func (q *QUIC) handle(connection quic.Connection) {
+func (q *QUIC) handle(connection quic.Conn) {
 	defer connection.CloseWithError(0, "")
 	for {
 		stream, err := connection.AcceptStream(context.Background())
